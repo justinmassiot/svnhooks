@@ -1,0 +1,3 @@
+[submodule "svnperms"]
+	path = svnperms
+	url = https://github.com/justinmassiot/svnperms.git
