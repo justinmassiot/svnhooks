@@ -4,25 +4,29 @@ Framework and example hook scripts for SVN (Subversion).
 ## Launcher for SVN hooks
 This project provides the 9 standard SVN hooks as generic launchers for your own scripts. Each one of the nine hooks executes the `execute_all_same_hooks.sh` script which then runs the approriate job(s) of your choice.
 
-Just like a Linux system does at start-up, this framework will run all hooks corresponding to the current operation. If the `post-commit` hook is triggered, `execute_all_same_hooks.sh` is going to run all scripts with a file name like `post-commit.*`. Thus, to create a server-hook functionality you simply have to create a file called `your-hook-type.*`.
+This framework will loop through all the files inside the original hook folder and execute all scripts that match the filename pattern. Thus, to create a server-hook functionality you simply have to create a file called `your-hook-type.1234*`. If the `post-commit` hook is triggered, `execute_all_same_hooks.sh` is going to run all scripts with a file name like **`post-commit.(any number)(any characters)`**. It is going to accept `post-commit.01`, `post-commit.51`, `post-commit.02.py` but not `post-commit.tmpl` or `post-commit01`.
 
 Example list of valid names:
 * post-commit.1
+* post-commit.1_hello
+* post-commit.01.myhook-verycool.sh
+* post-commit.123_myhook-verycool.sh
+
+Example list of **invalid** names:
+* post-commit17
+* post-commit-17
 * post-commit.hello
 * post-commit.hello.py
-* post-commit.1_hello
-* post-commit.1.myhook-verycool.sh
-* post-commit.1_myhook-verycool.sh
 
 You can even create a symbolic link to an existing script or binary:
 ```sh
-ln -s /usr/bin/mysupertool post-commit.linktomysupertool
+ln -s /usr/bin/mysupertool post-commit.81.linktomysupertool
 ```
 
 ## Execution order
 The framework executes the files in "natural" order, which means that `post-commit.2` would be executed after `post-commit.1`.
 
-As for the Linux start-up/shutdown scripts, we strongly advise you to follow the proposed naming scheme:
+Just like a Linux system manages start-up/shutdown scripts, we strongly advise you to follow the proposed naming scheme:
 * hooktype.**1x** => pre server-side operations (available space, mirroring tasks, etc.)
 * hooktype.**2x** => authentication
 * hooktype.**3x** => rights management
@@ -33,7 +37,7 @@ As for the Linux start-up/shutdown scripts, we strongly advise you to follow the
 * hooktype.**8x** => after-operation processing (e-mails, auto-commit, etc.)
 * hooktype.**9x** => post server-side operation
 
-Not all suffixes are valid for all hook types. Please only use suffixes that are appropriate in the context of the hook.
+_Not all suffixes are valid for all hook types._ Please only use suffixes that are appropriate in the context of the hook.
 
 Example script names:
 * pre-commit.31
