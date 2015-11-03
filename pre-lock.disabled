@@ -1,0 +1,57 @@
+#!/bin/bash
+# Don't use #!/bin/sh for this script because the parameters array ${@} is misinterpreted on some Linux systems. See http://stackoverflow.com/a/20616103 .
+
+########################################
+##########  IMPORTANT NOTICE  ##########
+########################################
+# The pre-lock hook is in charge of generating the lock token UUID! That's the reason why it is disabled by default.
+# http://inst.eecs.berkeley.edu/~cs61b/fa12/docs/svn-book-html-chunk/svn.ref.reposhooks.pre-lock.html
+########################################
+
+# PRE-LOCK HOOK
+#
+# The pre-lock hook is invoked before an exclusive lock is
+# created.  Subversion runs this hook by invoking a program 
+# (script, executable, binary, etc.) named 'pre-lock' (for which
+# this file is a template), with the following ordered arguments:
+#
+#   [1] REPOS-PATH   (the path to this repository)
+#   [2] PATH         (the path in the repository about to be locked)
+#   [3] USER         (the user creating the lock)
+#   [4] COMMENT      (the comment of the lock)
+#   [5] STEAL-LOCK   (1 if the user is trying to steal the lock, else 0)
+#
+# If the hook program outputs anything on stdout, the output string will
+# be used as the lock token for this lock operation.  If you choose to use
+# this feature, you must guarantee the tokens generated are unique across
+# the repository each time.
+#
+# The default working directory for the invocation is undefined, so
+# the program should set one explicitly if it cares.
+#
+# If the hook program exits with success, the lock is created; but
+# if it exits with failure (non-zero), the lock action is aborted
+# and STDERR is returned to the client.
+
+# On a Unix system, the normal procedure is to have 'pre-lock'
+# invoke other programs to do the real work, though it may do the
+# work itself too.
+#
+# Note that 'pre-lock' must be executable by the user(s) who will
+# invoke it (typically the user httpd runs as), and that user must
+# have filesystem-level permission to access the repository.
+#
+# On a Windows system, you should name the hook program
+# 'pre-lock.bat' or 'pre-lock.exe',
+# but the basic idea is the same.
+
+
+# get the full path of the current script ("$1" is the path of the current repository)
+HOOK_PATH="$1"/hooks/`basename ${0}`
+# launch a script to execute all hooks of same kind, and propagate all arguments
+"$1"/hooks/execute_all_same_hooks.sh "$HOOK_PATH" "${@}" || exit 1;
+# Do not forget to specify '#!/bin/bash' on the first line of the current script because the parameters array ${@} is misinterpreted on some Linux systems. See http://stackoverflow.com/a/20616103 .
+
+# All checks passed, so allow the operation.
+exit 0
+

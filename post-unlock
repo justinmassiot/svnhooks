@@ -1,0 +1,46 @@
+#!/bin/bash
+# Don't use #!/bin/sh for this script because the parameters array ${@} is misinterpreted on some Linux systems. See http://stackoverflow.com/a/20616103 .
+
+# POST-UNLOCK HOOK
+#
+# The post-unlock hook runs after a path is unlocked.  Subversion runs
+# this hook by invoking a program (script, executable, binary, etc.)
+# named 'post-unlock' (for which this file is a template) with the 
+# following ordered arguments:
+#
+#   [1] REPOS-PATH   (the path to this repository)
+#   [2] USER         (the user who destroyed the lock)
+#
+# The paths that were just unlocked are passed to the hook via STDIN
+# (as of Subversion 1.2, only one path is passed per invocation, but
+# the plan is to pass all unlocked paths at once, so the hook program
+# should be written accordingly).
+#
+# The default working directory for the invocation is undefined, so
+# the program should set one explicitly if it cares.
+#
+# Because the lock has already been destroyed and cannot be undone,
+# the exit code of the hook program is ignored.
+#
+# On a Unix system, the normal procedure is to have 'post-unlock'
+# invoke other programs to do the real work, though it may do the
+# work itself too.
+#
+# Note that 'post-unlock' must be executable by the user(s) who will
+# invoke it (typically the user httpd runs as), and that user must
+# have filesystem-level permission to access the repository.
+#
+# On a Windows system, you should name the hook program
+# 'post-unlock.bat' or 'post-unlock.exe',
+# but the basic idea is the same.
+
+
+# get the full path of the current script ("$1" is the path of the current repository)
+HOOK_PATH="$1"/hooks/`basename ${0}`
+# launch a script to execute all hooks of same kind, and propagate all arguments
+"$1"/hooks/execute_all_same_hooks.sh "$HOOK_PATH" "${@}" || exit 1;
+# Do not forget to specify '#!/bin/bash' on the first line of the current script because the parameters array ${@} is misinterpreted on some Linux systems. See http://stackoverflow.com/a/20616103 .
+
+# All checks passed, so allow the operation.
+exit 0
+
