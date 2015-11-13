@@ -1,6 +1,8 @@
 # svnhooks
 Framework and example hook scripts for SVN (Subversion).
 
+This project is licensed under the version 2.0 of the Apache License, the same that is used from the Subversion project itself.
+
 ## Launcher for SVN hooks
 This project provides the 9 standard SVN hooks as generic launchers for your own scripts. Each one of the nine hooks executes the `execute_all_same_hooks.sh` script which then runs the approriate job(s) of your choice.
 
