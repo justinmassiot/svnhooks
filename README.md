@@ -1,7 +1,7 @@
 # svnhooks
 Framework and example hook scripts for SVN (Subversion).
 
-This project is licensed under the version 2.0 of the Apache License, the same that is used from the [Subversion project](https://subversion.apache.org/) itself.
+This project is licensed under the version 2.0 of the Apache License, the same that is used for the [Subversion project](https://subversion.apache.org/) itself.
 
 ## Hook scripts for SVN
 ### Ressources about hooks
