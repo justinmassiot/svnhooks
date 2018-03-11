@@ -24,7 +24,7 @@
 # [1] REPOS-PATH   (the path to this repository)
 # [2] TXN-NAME     (the name of the txn about to be committed)
 python "$1"/hooks/svnperms/svnperms.py -r "$1" -t "$2" || exit 1;
-# the svnperms configuration is defined in ../conf/svnperms.conf
+# the svnperms configuration is defined in ./conf/svnperms.conf
 
 # If we are here, it means that all checks passed, so we can allow the operation to be done.
 exit 0;
