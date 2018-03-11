@@ -43,7 +43,7 @@ ln -s /usr/bin/mysupertool post-commit.81.linktomysupertool
 The framework executes the files in "natural" order, which means that `post-commit.2` would be executed after `post-commit.1`.
 
 Just like a Linux system manages start-up/shutdown scripts, we strongly advise you to follow the _proposed naming scheme_:
-* hooktype.**1x** => pre server-side operations (available space, mirroring tasks, etc.)
+* hooktype.**1x** => server-side pre-operations (available space, mirroring tasks, etc.)
 * hooktype.**2x** => authentication
 * hooktype.**3x** => rights management
 * hooktype.**4x** => _not in use (reserved for future needs)_
@@ -51,7 +51,7 @@ Just like a Linux system manages start-up/shutdown scripts, we strongly advise y
 * hooktype.**6x** => content check (file types, syntax, unauthorized files, etc.)
 * hooktype.**7x** => _not in use (reserved for future needs)_
 * hooktype.**8x** => after-operation processing (e-mails, auto-commit, etc.)
-* hooktype.**9x** => post server-side operation
+* hooktype.**9x** => server-side post-operations
 
 Hint 1: Be consistent in the choice of your filenames because it will then determine the order of execution! In our example scripts we always use a `hook-type.12.*` name format.
 
