@@ -10,6 +10,7 @@ This project is about SVN hook scripts, or "hooks". If you are not familiar with
 Useful ressources to implement hooks are available as part of the SVN project files:
  1. http://svn.apache.org/repos/asf/subversion/trunk/tools/hook-scripts/
  2. http://svn.apache.org/repos/asf/subversion/trunk/contrib/hook-scripts/
+ 3. https://sourceforge.net/p/tortoisesvn/code/HEAD/tree/trunk/contrib/hook-scripts/
 
 There are also many more user scripts everywhere on the web.
 
