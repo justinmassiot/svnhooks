@@ -42,19 +42,7 @@ if [ "$ACTION" = "M" ] ; then
   # get the author of the commit
   AUTHOR=`svnlook author -r "$REV" "$REPOS"`
   
-  if [ "$USER" = "$AUTHOR" -a "`cat $AUTHZ_FILE_PATH | grep ''^$ADMIN_GROUP_NAME\ *='' | grep $USER`" = "" ] ; then
-    # if the current user is the author but not an administrator ...
-    if [ "$PROPNAME" = "svn:log" ] ; then
-      # ... he/she is allowed to edit the log message
-      exit 0
-    else
-      echo "----------" 1>&2
-      echo "You ($USER) are not allowed to change the $PROPNAME property. Changing revision properties other than svn:log is prohibited." 1>&2
-      echo "Please contact your SVN administrator." 1>&2
-      echo "----------" 1>&2
-    fi
-    
-  elif [ "`cat $AUTHZ_FILE_PATH | grep ''^$ADMIN_GROUP_NAME\ *='' | grep $USER`" = "" != "" ] ; then
+  if [ "`cat $AUTHZ_FILE_PATH | grep ''^$ADMIN_GROUP_NAME\ *='' | grep $USER`" = "" != "" ] ; then
     # if the current user is an administrator ...
     if [ "$PROPNAME" = "svn:author" -o "$PROPNAME" = "svn:date" -o "$PROPNAME" = "svn:log" ] ; then
       # ... he/she is allowed to edit the properties "log", "date" and "author"
@@ -66,6 +54,18 @@ if [ "$ACTION" = "M" ] ; then
       echo "----------" 1>&2
     fi
   
+  elif [ "$USER" = "$AUTHOR" ] ; then
+    # if the current user is the original author (but not an administrator) ...
+    if [ "$PROPNAME" = "svn:log" ] ; then
+      # ... he/she is allowed to edit the log message
+      exit 0
+    else
+      echo "----------" 1>&2
+      echo "You ($USER) are not allowed to change the $PROPNAME property. Changing revision properties other than svn:log is prohibited." 1>&2
+      echo "Please contact your SVN administrator." 1>&2
+      echo "----------" 1>&2
+    fi
+    
   else
     # the user is neither the author nor an administrator
     echo "----------" 1>&2
@@ -78,4 +78,3 @@ fi
 
 # If we are here, it means that some checks failed, so we stop the pending operation.
 exit 1
-
